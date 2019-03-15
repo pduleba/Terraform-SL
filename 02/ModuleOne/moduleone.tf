@@ -6,7 +6,7 @@ variable "aws_access_key" {}
 variable "aws_secret_key" {}
 variable "private_key_path" {}
 variable "key_name" {
-  default = "PluralsightKeys"
+  default = "LinuxIrelandKeyPair"
 }
 
 ##################################################################################
@@ -16,7 +16,7 @@ variable "key_name" {
 provider "aws" {
   access_key = "${var.aws_access_key}"
   secret_key = "${var.aws_secret_key}"
-  region     = "us-east-1"
+  region     = "eu-west-1"
 }
 
 ##################################################################################
@@ -24,7 +24,7 @@ provider "aws" {
 ##################################################################################
 
 resource "aws_instance" "nginx" {
-  ami           = "ami-c58c1dd3"
+  ami           = "ami-07683a44e80cd32c5"
   instance_type = "t2.micro"
   key_name        = "${var.key_name}"
 
@@ -35,6 +35,7 @@ resource "aws_instance" "nginx" {
 
   provisioner "remote-exec" {
     inline = [
+      "sudo rpm -ivh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm",
       "sudo yum install nginx -y",
       "sudo service nginx start"
     ]
