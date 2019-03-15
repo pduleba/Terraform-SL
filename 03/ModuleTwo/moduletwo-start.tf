@@ -4,10 +4,9 @@
 
 variable "aws_access_key" {}
 variable "aws_secret_key" {}
+variable "aws_region" {}
 variable "private_key_path" {}
-variable "key_name" {
-  default = "PluralsightKeys"
-}
+variable "private_key_name" {}
 variable "network_address_space" {
   default = "10.1.0.0/16"
 }
@@ -25,7 +24,7 @@ variable "subnet2_address_space" {
 provider "aws" {
   access_key = "${var.aws_access_key}"
   secret_key = "${var.aws_secret_key}"
-  region     = "us-east-1"
+  region     = "${var.aws_region}"
 }
 
 ##################################################################################
@@ -119,11 +118,11 @@ resource "aws_security_group" "nginx-sg" {
 
 # INSTANCES #
 resource "aws_instance" "nginx1" {
-  ami           = "ami-c58c1dd3"
+  ami           = "ami-07683a44e80cd32c5"
   instance_type = "t2.micro"
   subnet_id     = "${aws_subnet.subnet1.id}"
   vpc_security_group_ids = ["${aws_security_group.nginx-sg.id}"]
-  key_name        = "${var.key_name}"
+  key_name        = "${var.private_key_name}"
 
   connection {
     user        = "ec2-user"
@@ -132,6 +131,7 @@ resource "aws_instance" "nginx1" {
 
   provisioner "remote-exec" {
     inline = [
+      "sudo rpm -ivh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm",
       "sudo yum install nginx -y",
       "sudo service nginx start",
       "echo '<html><head><title>Blue Team Server</title></head><body style=\"background-color:#1F778D\"><p style=\"text-align: center;\"><span style=\"color:#FFFFFF;\"><span style=\"font-size:28px;\">Blue Team</span></span></p></body></html>' | sudo tee /usr/share/nginx/html/index.html"
