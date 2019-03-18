@@ -194,6 +194,7 @@ resource "aws_instance" "nginx2" {
       "sudo amazon-linux-extras install nginx1.12 -y",
       "sudo yum install nginx -y",
       "sudo service nginx start",
+      "sudo chkconfig nginx on",
       "echo '<html><head><title>Green Team Server</title></head><body style=\"background-color:#77A032\"><p style=\"text-align: center;\"><span style=\"color:#FFFFFF;\"><span style=\"font-size:28px;\">Green Team</span></span></p></body></html>' | sudo tee /usr/share/nginx/html/index.html"
     ]
   }
