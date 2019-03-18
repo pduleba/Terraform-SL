@@ -35,9 +35,10 @@ resource "aws_instance" "nginx" {
 
   provisioner "remote-exec" {
     inline = [
-      "sudo rpm -ivh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm",
+      "sudo amazon-linux-extras install nginx1.12 -y",
       "sudo yum install nginx -y",
-      "sudo service nginx start"
+      "sudo service nginx start",
+      "sudo chkconfig nginx on",
     ]
   }
 }

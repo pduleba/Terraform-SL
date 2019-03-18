@@ -82,3 +82,6 @@ fabric.properties
 *.iml
 out
 gen
+
+# Logs
+*.log
