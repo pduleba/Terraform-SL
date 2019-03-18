@@ -40,6 +40,7 @@ data "aws_availability_zones" "available" {}
 # NETWORKING #
 resource "aws_vpc" "vpc" {
   cidr_block = "${var.network_address_space}"
+  enable_dns_hostnames = "false"
 
 }
 
